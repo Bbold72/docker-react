@@ -1,0 +1,16 @@
+FROM node:16-alpine
+
+# specifying that the USER which will execute RUN, CMD, or ENTRYPOINT instructions will be the node user, as opposed to root (default).
+USER node
+ 
+RUN mkdir -p /home/node/app
+WORKDIR /home/node/app
+ 
+COPY --chown=node:node ./package.json ./
+RUN npm install
+COPY --chown=node:node ./ ./
+ 
+CMD ["npm", "start"]
+
+# docker build -f Dockerfile.dev .
+# docker run -it -p 3000:3000 -v /home/node/app/node_modules -v ~/courses/dockerKubernetes/frontend:/home/node/app IMAGE_ID
